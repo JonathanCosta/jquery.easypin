@@ -1,27 +1,27 @@
 (function($){
 
-	$.fn.easypin = function(options) {
+    $.fn.easypin = function(options) {
 
-		options = options || {};
+	options = options || {};
 
-        if(localStorage) {
-            localStorage.removeItem('easypin');
-        }
+	if(localStorage) {
+	    localStorage.removeItem('easypin');
+	}
 
-		var parentClass = $.fn.easypin.defaults.parentClass;
-		var pinMapClass = $.fn.easypin.defaults.pinMapClass;
-		var hoverClass = $.fn.easypin.defaults.hoverClass;
-		var dashWidth = $.fn.easypin.defaults.dashWidth;
-		var imageZindex = $.fn.easypin.defaults.imageZindex;
-		var pinMapZindex = $.fn.easypin.defaults.pinMapZindex;
-		var hoverLayerZindex = $.fn.easypin.defaults.hoverLayerZindex;
+	var parentClass = $.fn.easypin.defaults.parentClass;
+	var pinMapClass = $.fn.easypin.defaults.pinMapClass;
+	var hoverClass = $.fn.easypin.defaults.hoverClass;
+	var dashWidth = $.fn.easypin.defaults.dashWidth;
+	var imageZindex = $.fn.easypin.defaults.imageZindex;
+	var pinMapZindex = $.fn.easypin.defaults.pinMapZindex;
+	var hoverLayerZindex = $.fn.easypin.defaults.hoverLayerZindex;
 
-		// set default options values and became user side
-		$.extend($.fn.easypin.defaults, options );
+	// set default options values and became user side
+	$.extend($.fn.easypin.defaults, options );
 
-        var willPinningElements = this;
-        var loadedImgNum = 0;
-        var total = $(this).length;
+	var willPinningElements = this;
+	var loadedImgNum = 0;
+	var total = $(this).length;
 
         // hide all images
         willPinningElements.each(function(i) {
@@ -46,55 +46,55 @@
 
                 willPinningElements.each(function(i) {
 
-        			// get targetimage sizes
-        			var imageWidth = $(this).width();
-        			var imageHeight = $(this).height();
+        	    // get targetimage sizes
+        	    var imageWidth = $(this).width();
+        	    var imageHeight = $(this).height();
 
-        			if(imageHeight > 0) {
+        	    if(imageHeight > 0) {
 
-            			// create parent element and add than target image after
-            			var containerElement = $(this)
-            				.after(
+            		// create parent element and add than target image after
+            		var containerElement = $(this)
+            		    .after(
                                 $('<div/>', {'class': parentClass})
-                                    .attr('data-index', setIndex(setClass(parentClass), document.body))
+                                .attr('data-index', setIndex(setClass(parentClass), document.body))
                             )
-            				.appendTo(setClass(parentClass)+':last')
-            				.css('position', 'absolute')
-            				.css('z-index', imageZindex);
+            		    .appendTo(setClass(parentClass)+':last')
+            		    .css('position', 'absolute')
+            		    .css('z-index', imageZindex);
 
-            			// add class to target image
-            			$(this).addClass('easypin-target')
+            		// add class to target image
+            		$(this).addClass('easypin-target')
 
-                        // creating random key for easypin-id
-                        if(! $(this).attr('easypin-id')) {
-                            var easypinId = createRandomId();
-                            $(this).attr('easypin-id', easypinId);
-                        }else{
-                            var easypinId = $(this).attr('easypin-id');
-                        }
+			// creating random key for easypin-id
+			if(! $(this).attr('easypin-id')) {
+			    var easypinId = createRandomId();
+			    $(this).attr('easypin-id', easypinId);
+			}else{
+			    var easypinId = $(this).attr('easypin-id');
+			}
 
-            			// set target image sizes to parent container
-            			containerElement
-            				.parent()
-            				.attr($.fn.easypin.config('widthAttribute'), imageWidth)
-            				.attr($.fn.easypin.config('heightAttribute'), imageHeight)
-            				// and set style width, height and position
-            				.css({
-            					width: setPx(imageWidth),
-            					height: setPx(imageHeight),
-            					position: $.fn.easypin.config('parentPosition'),
-            					border: setPx(dashWidth)+' dashed #383838',
-                                'box-sizing': 'content-box',
-                                'webkit-box-sizing': 'content-box',
-                                '-moz-box-sizing': 'content-box'
-            				});
+            		// set target image sizes to parent container
+            		containerElement
+            		    .parent()
+            		    .attr($.fn.easypin.config('widthAttribute'), imageWidth)
+            		    .attr($.fn.easypin.config('heightAttribute'), imageHeight)
+            		    // and set style width, height and position
+            		    .css({
+            		        width: setPx(imageWidth),
+            		        height: setPx(imageHeight),
+            		        position: $.fn.easypin.config('parentPosition'),
+            		        border: setPx(dashWidth)+' dashed #383838',
+			        'box-sizing': 'content-box',
+			        'webkit-box-sizing': 'content-box',
+			        '-moz-box-sizing': 'content-box'
+            		    });
 
-                        initPin(easypinId, $(this));
-            		}
-        		});
+			initPin(easypinId, $(this));
+            	    }
+        	});
 
                 // hover event
-        		var parentElement = $(setClass(parentClass));
+        	var parentElement = $(setClass(parentClass));
 
         		// on hover parent element then create opacity
         		$(parentElement).hover(function() {
@@ -980,7 +980,7 @@
 		}
 	};
 
-	$.fn.easypin.defaults = {
+    $.fn.easypin.defaults = {
 
         init: {},
         limit: 0,
@@ -989,101 +989,97 @@
        	drop: function() {},
        	drag: function() {},
        	modalWidth: '200px',
-		widthAttribute: 'data-width',
+	widthAttribute: 'data-width',
        	heightAttribute: 'data-height',
        	xAttribute: 'data-x',
        	yAttribute: 'data-y',
-		markerSrc: 'img/marker.png',
-		editSrc: 'img/edit.png',
-		deleteSrc: 'img/remove.png',
+	markerSrc: 'img/marker.png',
+	editSrc: 'img/edit.png',
+	deleteSrc: 'img/remove.png',
        	parentClass: 'pinParent',
-		markerClass: 'easy-marker',
-		hoverClass: 'hoverClass',
-		pinMapClass: 'pinCanvas',
+	markerClass: 'easy-marker',
+	hoverClass: 'hoverClass',
+	pinMapClass: 'pinCanvas',
        	parentPosition: 'relative',
-		popupOpacityLayer: 'popupOpacityLayer',
-		markerWidth: 32,
-		markerHeight: 'auto',
-		animate: false,
-		posYBalance: 2,
-		posXBalance: 2,
-		dashWidth: 2,
-		imageZindex: 1,
-		pinMapZindex: 2,
-		hoverLayerZindex: 3,
-		markerContainerZindex: 4,
-		markerBorderColor: '#FFFF00',
-		downPoint: 10
-
-	};
+	popupOpacityLayer: 'popupOpacityLayer',
+	markerWidth: 32,
+	markerHeight: 'auto',
+	animate: false,
+	posYBalance: 2,
+	posXBalance: 2,
+	dashWidth: 2,
+	imageZindex: 1,
+	pinMapZindex: 2,
+	hoverLayerZindex: 3,
+	markerContainerZindex: 4,
+	markerBorderColor: '#FFFF00',
+	downPoint: 10
+    };
 
     $.fn.easypinShow.defaults = {};
 
-	$.fn.easypin.container = {};
-	$.fn.easypin.markerContainer = {};
+    $.fn.easypin.container = {};
+    $.fn.easypin.markerContainer = {};
 
-	var setClass = function(name) {
-		return '.'+name;
-	};
+    var setClass = function(name) {
+	return '.'+name;
+    };
 
-	var setPx = function(num) {
-		return num+'px';
-	};
+    var setPx = function(num) {
+	return num+'px';
+    };
 
-	var getMarkerUrl = function() {
-		return $.fn.easypin.defaults.markerSrc;
-	};
+    var getMarkerUrl = function() {
+	return $.fn.easypin.defaults.markerSrc;
+    };
 
-	var is_open = function(type, parentElement) {
+    var is_open = function(type, parentElement) {
+	if(type == 'popup') {
+	    var className = setClass($.fn.easypin.defaults.popupOpacityLayer);
+	    return $(className, parentElement).size() > 0;
 
-		if(type == 'popup') {
+	}
 
-			var className = setClass($.fn.easypin.defaults.popupOpacityLayer);
-			return $(className, parentElement).size() > 0;
+    };
 
-		}
-
-	};
-
-	var createPopup = function(elem, markerContainer) {
-
-		var parentElement = $(elem.target).closest('.pinParent');
+    var createPopup = function(elem, markerContainer) {
+	var parentElement = $(elem.target).closest('.pinParent');
         var parentIndex = $(parentElement).attr('data-index');
         var targetImage = $('.easypin-target', parentElement);
-		var widthAttr = $.fn.easypin.defaults.widthAttribute;
-		var heightAttr = $.fn.easypin.defaults.heightAttribute;
+	var widthAttr = $.fn.easypin.defaults.widthAttribute;
+	var heightAttr = $.fn.easypin.defaults.heightAttribute;
 
-		// create modal base layer
-		var opacityLayer = $('<div/>')
-			.addClass('popupOpacityLayer')
-			.css({
-				'width': '100%',
-				'height': '100%',
-				'background-color': 'black',
-				'position': 'absolute',
-				'opacity': '.0',
-				'z-index': 14
-			});
+	// create modal base layer
+	var opacityLayer = $('<div/>')
+	    .addClass('popupOpacityLayer')
+	    .css({
+		'width': '100%',
+		'height': '100%',
+		'background-color': 'black',
+		'position': 'absolute',
+		'opacity': '.0',
+		'z-index': 14
+	});
 
-		// append to parent container
-		$(parentElement)
-			.append(opacityLayer)
+	// append to parent container
+	$(parentElement)
+	    .append(opacityLayer)
 
-			// cross to child element
-			.children(setClass($.fn.easypin.defaults.hoverClass))
-				.hide() // hover class hide
+	    // cross to child element
+	    .children(setClass($.fn.easypin.defaults.hoverClass))
+	    .hide() // hover class hide
 
-			// back to parent element
-			.parent()
+	    // back to parent element
+	    .parent()
 
-			// base layer animate
-			.children(setClass($.fn.easypin.defaults.popupOpacityLayer))
-				.animate({
-					opacity: 0.4,
-				}, 800);
+	    // base layer animate
+	    .children(setClass($.fn.easypin.defaults.popupOpacityLayer))
+	    .animate({
+		opacity: 0.4,
+		}, 800);
 
-		var width = parseInt($(parentElement).attr(widthAttr));
-		var height = parseInt($(parentElement).attr(heightAttr));
+	var width = parseInt($(parentElement).attr(widthAttr));
+	var height = parseInt($(parentElement).attr(heightAttr));
 
 		// create modal parent element
 		var modalParent = $('<div/>')
@@ -2004,18 +2000,16 @@
     * Recursively merge properties of two objects
     */
     function merge(obj1, obj2) {
+	for (var p in obj2) {
+	    try {
+		obj1[p] = obj2[p];
 
-      for (var p in obj2) {
-        try {
-            obj1[p] = obj2[p];
-
-        } catch(e) {
-          // Property in destination object not set; create it and set its value.
-          obj1[p] = obj2[p];
-
-        }
-      }
-
-      return obj1;
+	    } catch(e) {
+		// Property in destination object not set; create it and set its value.
+		obj1[p] = obj2[p];
+	    }
+	}
+	return obj1;
     }
+
 }(jQuery));
