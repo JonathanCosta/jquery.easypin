@@ -62,14 +62,14 @@
                             .css('z-index', imageZindex);
 
                         // add class to target image
-                        $(this).addClass('easypin-target')
-
+                        $(this).addClass('easypin-target');
+                        var easypinId;
                         // creating random key for easypin-id
                         if (!$(this).attr('easypin-id')) {
-                            var easypinId = createRandomId();
+                            easypinId = createRandomId();
                             $(this).attr('easypin-id', easypinId);
                         } else {
-                            var easypinId = $(this).attr('easypin-id');
+                            easypinId = $(this).attr('easypin-id');
                         }
 
                         // set target image sizes to parent container
@@ -170,12 +170,12 @@
                         var elLimit = $('img' + setClass('easypin-target'), parentElement).attr('easypin-limit');
 
                         // check the limit
-                        if (elLimit && !isNaN(elLimit) && parseInt(elLimit) != 0) {
+                        if (elLimit && !isNaN(elLimit) && parseInt(elLimit) !== 0) {
                             if (totalMarker >= parseInt(elLimit)) {
                                 $.fn.easypin.defaults.exceeded('limit exceeded');
                                 return;
                             }
-                        } else if (limit != 0 && totalMarker >= limit) {
+                        } else if (limit !== 0 && totalMarker >= limit) {
                             $.fn.easypin.defaults.exceeded('limit exceeded');
                             return;
                         }
@@ -253,12 +253,10 @@
                             markerWidth: markerWidth,
                             markerHeight: markerHeight,
                             markerContainerZindex: markerContainerZindex,
-                            markerWidth: markerWidth,
                             absX: absX,
                             absY: absY,
                             imageWidth: imageWidth,
                             imageHeight: imageHeight,
-                            parentElement: parentElement,
                             src: src
                         });
                     });
@@ -268,8 +266,8 @@
 
             }
 
-        });
 
+        });
         return this;
     };
 
@@ -326,6 +324,7 @@
         // set cursor x,y position
         var xPosition = depends.markerBorderX.toFixed(3);
         var yPosition = depends.markerBorderY.toFixed(3);
+        var toolsPosition;
 
         // marker container append to pin parent container and run callback function
         if (is_open('popup', depends.parentElement)) {
@@ -336,9 +335,9 @@
 
         // calculate tools position for animate
         if ((depends.markerBorderY + depends.markerHeight + 10) > depends.imageHeight) {
-            var toolsPosition = -13;
+            toolsPosition = -13;
         } else {
-            var toolsPosition = depends.markerHeight + 2;
+            toolsPosition = depends.markerHeight + 2;
         }
 
         // marker animate
@@ -400,7 +399,7 @@
                 var parentElement = $(markerInstance).parent();
                 var markerContainer = $(markerInstance);
 
-                var targetImage = $('img.easypin-target', parentElement)
+                var targetImage = $('img.easypin-target', parentElement);
                 var markerWidthHalf = (depends.markerWidth / 2);
                 var markerHeightHalf = (depends.markerHeight / 2);
                 liveY = e.pageY - targetImage.offset().top;
@@ -410,22 +409,22 @@
                 var relX = liveX;
 
                 if (liveY - markerHeightHalf < 0) {
-                    var relY = markerHeightHalf;
+                    relY = markerHeightHalf;
                 } else if (liveY + markerHeightHalf > depends.imageHeight) {
-                    var relY = depends.imageHeight - markerHeightHalf;
+                    relY = depends.imageHeight - markerHeightHalf;
                 }
 
                 if (liveX - markerWidthHalf < 0) {
-                    var relX = markerWidthHalf;
+                    relX = markerWidthHalf;
                 } else if (liveX + markerWidthHalf > depends.imageWidth) {
-                    var relX = depends.imageWidth - markerWidthHalf;
+                    relX = depends.imageWidth - markerWidthHalf;
                 }
 
                 var absX = relX.toFixed(3) - markerWidthHalf;
                 var absY = parseInt(relY.toFixed(3)) + markerHeightHalf;
 
                 // on move marker then check tool container position
-                checkToolsPosition(absY, depends.imageHeight, markerContainer)
+                checkToolsPosition(absY, depends.imageHeight, markerContainer);
 
                 // drag event
                 $.fn.easypin.defaults.drag(absX, absY, markerContainer);
@@ -597,10 +596,10 @@
 
         // set default options values and became user side
         $.extend($.fn.easypinShow.defaults, options);
-
+        var depends = {};
         try {
 
-            var depends = {
+            depends = {
                 responsive: options.responsive || false,
                 pin: options.pin || 'marker.png',
                 data: options.data || {},
@@ -621,7 +620,7 @@
                 $(this).css('opacity', 0);
             });
 
-            $(depends.allCanvas).one('load', function() {
+            $(depends.allCanvas).on('load', function() {
                 loadedImgNum += 1;
 
                 // show loaded image
@@ -664,13 +663,15 @@
             var height = $(this).height();
             var width = $(this).width();
             var parentWidth = $(canvas).width();
+            var absWidth;
+            var absHeight;
 
             if (depends.responsive === true) {
-                var absWidth = '100%';
-                var absHeight = '100%';
+                absWidth = '100%';
+                absHeight = '100%';
             } else {
-                var absWidth = setPx(width);
-                var absHeight = setPx(height);
+                absWidth = setPx(width);
+                absHeight = setPx(height);
             }
 
             var pinContainer = $('<div/>')
@@ -721,7 +722,7 @@
                     $(viewContainer).css('opacity', 0);
                     $(pinContainer).append(viewContainer);
 
-                    if (depends.popover.show == true) {
+                    if (depends.popover.show === true) {
                         $('.easypin-popover', pinContainer).show();
                     }
 
@@ -798,7 +799,7 @@
             });
 
         var markerBorderWidth = $(marker).children(':first').css('border-width').replace('px', '');
-        markerBorderWidth = markerBorderWidth != '' ? parseInt(markerBorderWidth) : 0;
+        markerBorderWidth = markerBorderWidth !== '' ? parseInt(markerBorderWidth) : 0;
         var markerWidth = $(marker).children(':first').width();
         var markerHeight = $(marker).children(':first').height();
         var popoverHeight = $(popover).children(':first').height();
@@ -834,7 +835,7 @@
 
         markerContainer = $(markerContainer)
             .css('left', pinLeft + '%')
-            .css('top', pinTop + '%')
+            .css('top', pinTop + '%');
 
         return markerContainer;
     };
@@ -859,7 +860,7 @@
                     // current pin id
                     args.push($.fn.easypin.container['pin_id']);
                     args.push(data[i]);
-                    content = callbackVars[i].apply(null, args)
+                    content = callbackVars[i].apply(null, args);
 
                 }
 
@@ -879,7 +880,7 @@
     };
 
     var getCssPropertyValue = function(prop, el) {
-        var el = $(el).hide().appendTo('body');
+        el = $(el).hide().appendTo('body');
         var val = el.css(prop);
         el.remove();
 
@@ -901,6 +902,7 @@
     $.fn.easypin.fire = function(namespace, params, callback) {
 
         if (typeof($.fn.easypin.container[namespace]) != 'undefined') {
+            var eventReturn;
 
             if (typeof(params) == 'function') {
                 callback = params;
@@ -913,9 +915,9 @@
             if (typeof(callback) == 'function') {
                 var callbackArgs = new Array();
                 callbackArgs.push(getEventData(namespace));
-                var eventReturn = callback.apply(null, callbackArgs);
+                eventReturn = callback.apply(null, callbackArgs);
             } else {
-                var eventReturn = getEventData(namespace);
+                eventReturn = getEventData(namespace);
             }
 
             var dependsArgs = new Array();
@@ -1116,7 +1118,7 @@
         // modal parent element append to parent element
         $('.popupOpacityLayer', parentElement).after(modalParent);
 
-        var modalHeight = $('.modalContext').height()
+        var modalHeight = $('.modalContext').height();
         var modalWidth = $(modalContext).width();
 
         var parentLeft = $(elem.target).closest(setClass($.fn.easypin.defaults.parentClass)).offset().left;
@@ -1126,6 +1128,8 @@
         var parentTop = $(elem.target).closest(setClass($.fn.easypin.defaults.parentClass)).offset().top;
         var markerTop = $(elem.target).offset().top;
         var clickPosTop = (markerTop - parentTop);
+        var modalLeftPosition;
+        var modalTopPosition;
 
         // modal position process
         if ($(modalContent).attr('modal-position') == 'free') {
@@ -1133,22 +1137,22 @@
 
             // calculate free left position
             if ((clickPosLeft - 100) < modalWidth) {
-                var modalLeftPosition = clickPosLeft + $(markerContainer).width() + 50;
+                modalLeftPosition = clickPosLeft + $(markerContainer).width() + 50;
             } else {
-                var modalLeftPosition = clickPosLeft - modalWidth - 100;
+                modalLeftPosition = clickPosLeft - modalWidth - 100;
             }
 
             // calculate free top position
             if (modalHeight > height) {
-                var modalTopPosition = parentTop;
+                modalTopPosition = parentTop;
             } else if ((height - clickPosTop) < modalHeight) {
-                var modalTopPosition = height - (modalHeight + 100);
+                modalTopPosition = height - (modalHeight + 100);
             } else {
-                var modalTopPosition = clickPosTop - (modalHeight / 2);
+                modalTopPosition = clickPosTop - (modalHeight / 2);
             }
         } else {
-            var modalLeftPosition = (width / 2) - (modalWidth / 2) - 10;
-            var modalTopPosition = (height / 2) - ($(modalContext).height() / 2) - 10;
+            modalLeftPosition = (width / 2) - (modalWidth / 2) - 10;
+            modalTopPosition = (height / 2) - ($(modalContext).height() / 2) - 10;
         }
 
         // modal body hide by position
@@ -1223,11 +1227,12 @@
 
                 // check the form exists
                 var formExists = $('form', modalContext).size() > 0;
+                var modalBody;
 
                 if (formExists) {
-                    var modalBody = $('form', modalContext); // form instance
+                    modalBody = $('form', modalContext); // form instance
                 } else {
-                    var modalBody = $('.easy-modal', modalContext); // current modal instance
+                    modalBody = $('.easy-modal', modalContext); // current modal instance
                 }
 
                 // run callback function
@@ -1237,7 +1242,7 @@
 
                     if (typeof(result) == 'boolean') {
 
-                        if (result == true) {
+                        if (result === true) {
 
                             closePopup(parentElement);
                         } else {
@@ -1287,16 +1292,16 @@
         var items = localStorage.getItem('easypin');
 
         if (!items) {
-            var items = new Object();
+            items = new Object();
         } else {
             try {
-                var items = JSON.parse(items);
+                items = JSON.parse(items);
             } catch (e) {
-                var items = new Object();
+                items = new Object();
             }
         }
 
-        var items = setNestedObject(parentId, markerIndex, items);
+        items = setNestedObject(parentId, markerIndex, items);
 
         if (typeof(items[parentId]['canvas']) == 'undefined') {
             items[parentId]['canvas'] = data.coords.canvas;
@@ -1320,16 +1325,16 @@
         var items = $('input[name="easypin-store"]').val();
 
         if (!items) {
-            var items = new Object();
+            items = new Object();
         } else {
             try {
-                var items = JSON.parse(decodeURIComponent(items));
+                items = JSON.parse(decodeURIComponent(items));
             } catch (e) {
-                var items = new Object();
+                items = new Object();
             }
         }
 
-        var items = setNestedObject(parentId, markerIndex, items);
+        items = setNestedObject(parentId, markerIndex, items);
 
         if (typeof(items[parentId]['canvas']) == 'undefined') {
             items[parentId]['canvas'] = data.coords.canvas;
@@ -1366,7 +1371,7 @@
         if (items) {
 
             try {
-                var items = JSON.parse(items);
+                items = JSON.parse(items);
                 items = setNestedObject(parentId, markerIndex, items);
                 items[parentId][markerIndex] = merge(items[parentId][markerIndex], data);
                 localStorage.setItem('easypin', toJsonString(items));
@@ -1383,7 +1388,7 @@
         if (items) {
 
             try {
-                var items = JSON.parse(decodeURIComponent(items));
+                items = JSON.parse(decodeURIComponent(items));
                 items = setNestedObject(parentId, markerIndex, items);
                 items[parentId][markerIndex] = merge(items[parentId][markerIndex], data);
                 $('input[name="easypin-store"]').val(encodeURIComponent(toJsonString(items)));
@@ -1420,9 +1425,9 @@
         var items = $('input[name="easypin-store"]').val();
         if (items) {
             try {
-                var items = JSON.parse(decodeURIComponent(items));
+                items = JSON.parse(decodeURIComponent(items));
 
-                items = removeHelper(parentId, markerIndex, items)
+                items = removeHelper(parentId, markerIndex, items);
 
                 var totalPin = $('input[name="easypin-store"]').size();
                 if (totalPin < 1) {
@@ -1451,7 +1456,7 @@
         if (items) {
 
             try {
-                var items = JSON.parse(items);
+                items = JSON.parse(items);
 
                 localStorage.setItem('easypin', toJsonString(removeHelper(parentId, markerIndex, items)));
 
@@ -1516,9 +1521,9 @@
     };
 
     var getItem = function(parentIndex, markerIndex) {
-
+        var items;
         if (localStorage) {
-            var items = localStorage.getItem('easypin');
+            items = localStorage.getItem('easypin');
 
             try {
                 items = JSON.parse(items);
@@ -1526,7 +1531,7 @@
                 items = {};
             }
         } else {
-            var items = $('input[name="easypin-store"]').val();
+            items = $('input[name="easypin-store"]').val();
 
             try {
                 items = JSON.parse(decodeURIComponent(items));
@@ -1829,7 +1834,7 @@
         var config = getConfigs();
 
         if (typeof(initData) == 'string') {
-            initData = JSON.parse(initData)
+            initData = JSON.parse(initData);
         }
 
         var parentElement = $(element).parents(setClass(config.parentClass));
@@ -1909,7 +1914,6 @@
                     absY: absY,
                     imageWidth: imageWidth,
                     imageHeight: imageHeight,
-                    parentElement: parentElement,
                     src: config.src
                 });
 
@@ -1952,8 +1956,6 @@
             markerClass: $.fn.easypin.defaults.markerClass,
             parentClass: $.fn.easypin.defaults.parentClass,
             markerContainerZindex: $.fn.easypin.defaults.markerContainerZindex,
-            // canvas border width
-            dashWidth: $.fn.easypin.defaults.dashWidth,
             // get x, y balance value
             posYBalance: $.fn.easypin.defaults.posYBalance,
             posXBalance: $.fn.easypin.defaults.posXBalance,
