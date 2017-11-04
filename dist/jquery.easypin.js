@@ -26,10 +26,14 @@
         // hide all images
         willPinningElements.each(function(i) {
             $(this).css('opacity', 0);
+            if($(this).complete) {
+                loadDone.call(this.parent);
+            };
         });
 
-        $(this).on('load', function() {
+        $(this).on('load', loadDone.call(this));
 
+        function loadDone() {
             loadedImgNum += 1;
             // show loaded image
             $(this).animate({
@@ -39,7 +43,8 @@
                 easing: 'easeInQuad'
             });
 
-            if (loadedImgNum == total) {
+            if (true) {
+            //if (loadedImgNum == total) {
 
                 willPinningElements.each(function(i) {
 
@@ -161,7 +166,7 @@
                         var parentElement = e.currentTarget;
 
                         // get total marker
-                        var totalMarker = $('.easy-marker', parentElement).size();
+                        var totalMarker = $('.easy-marker', parentElement).length;
 
                         // general limit
                         var limit = parseInt($.fn.easypin.defaults.limit);
@@ -267,7 +272,7 @@
             }
 
 
-        });
+        };
         return this;
     };
 
@@ -1028,7 +1033,7 @@
         if (type == 'popup') {
 
             var className = setClass($.fn.easypin.defaults.popupOpacityLayer);
-            return $(className, parentElement).size() > 0;
+            return $(className, parentElement).length > 0;
 
         }
 
@@ -1226,7 +1231,7 @@
                 var parentId = $('.easypin-target', parentElement).attr('easypin-id');
 
                 // check the form exists
-                var formExists = $('form', modalContext).size() > 0;
+                var formExists = $('form', modalContext).length > 0;
                 var modalBody;
 
                 if (formExists) {
@@ -1349,7 +1354,7 @@
 
         items[parentId][markerIndex] = data;
 
-        if ($('input[name="easypin-store"]').size() < 1) {
+        if ($('input[name="easypin-store"]').length < 1) {
             $(setClass($.fn.easypin.defaults.parentClass) + ':first').before('<input type="hidden" name="easypin-store" value="' + encodeURIComponent(toJsonString(items)) + '" />');
         } else {
             $('input[name="easypin-store"]').val(encodeURIComponent(toJsonString(items)));
@@ -1429,7 +1434,7 @@
 
                 items = removeHelper(parentId, markerIndex, items);
 
-                var totalPin = $('input[name="easypin-store"]').size();
+                var totalPin = $('input[name="easypin-store"]').length;
                 if (totalPin < 1) {
                     $(setClass($.fn.easypin.defaults.parentClass) + ':first').before('<input type="hidden" name="easypin-store" value="' + encodeURIComponent(toJsonString(items)) + '" />');
                 } else {
@@ -1787,7 +1792,7 @@
         $(tooltipContainer).append(span).append(arrow);
 
         // remove previous popover
-        if ($('div.popover', markerContainer).size() > 0) {
+        if ($('div.popover', markerContainer).length > 0) {
             // animate modal body
             $('div.popover', markerContainer).animate({
                 'top': '-' + setPx((popoverHeight - 15)),
